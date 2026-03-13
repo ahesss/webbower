@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebBower — SMSBower ULTRA BRUTAL</title>
+    <title>WebBower — SMSBOWER ULTRA BRUTAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,7 +16,6 @@
             --text-dim: #909090;
             --success: #00ff88;
             --danger: #ff3e3e;
-            --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
         }
 
@@ -25,7 +24,6 @@
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
             background-image: radial-gradient(circle at 50% -20%, #200a2e 0%, transparent 50%);
             min-height: 100vh;
         }
@@ -41,84 +39,62 @@
             margin-bottom: 30px;
         }
 
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(to right, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .logo { font-size: 28px; font-weight: 800; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .balance-card {
-            background: var(--glass);
-            padding: 8px 16px;
+            background: rgba(188, 19, 254, 0.05);
+            padding: 10px 20px;
             border-radius: 12px;
-            border: 1px solid var(--border);
+            border: 1px solid var(--accent);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             cursor: pointer;
-            transition: 0.3s;
         }
-        .balance-card:hover { border-color: var(--accent); }
-        .balance-card span { color: var(--gold); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+        .balance-card span { color: var(--gold); font-weight: 800; font-family: 'JetBrains Mono', monospace; font-size: 18px; }
+        .refresh-btn { font-size: 20px; transition: 0.3s; color: var(--accent); }
+        .refresh-btn:hover { transform: rotate(180deg); }
 
         .api-section {
             background: var(--panel);
-            padding: 20px;
-            border-radius: 16px;
+            padding: 24px;
+            border-radius: 20px;
             border: 1px solid var(--border);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         input {
             flex: 1;
             background: #000;
             border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 10px;
+            padding: 14px 20px;
+            border-radius: 12px;
             color: #fff;
             outline: none;
             font-family: 'JetBrains Mono', monospace;
-            transition: 0.3s;
         }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
         
         .btn {
-            padding: 12px 24px;
-            border-radius: 10px;
+            padding: 14px 20px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            font-weight: 800;
+            transition: 0.3s;
+            text-transform: uppercase;
         }
         .btn-primary { background: var(--accent); color: #fff; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--accent-glow); }
         .btn-stop { background: var(--danger); color: #fff; }
 
-        .main-grid {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 20px;
-        }
-
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        .main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 25px; }
 
         .card {
             background: var(--panel);
             padding: 20px;
-            border-radius: 16px;
+            border-radius: 20px;
             border: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
         select {
@@ -128,169 +104,143 @@
             padding: 12px;
             border-radius: 10px;
             color: #fff;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             outline: none;
         }
 
         .stats-box {
-            margin-top: 15px;
             padding: 15px;
-            background: rgba(0,0,0,0.3);
+            background: #000;
             border-radius: 12px;
             font-size: 14px;
-            line-height: 1.6;
         }
-        .stats-box p { display: flex; justify-content: space-between; }
-        .stats-box span { color: var(--accent); font-weight: 600; }
+        .stats-box p { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .stats-box span { color: var(--accent); font-weight: 800; }
 
+        /* VERTICAL LIST */
         .orders-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 70vh;
+            max-height: 80vh;
             overflow-y: auto;
-            padding-right: 5px;
+            width: 100%;
         }
-        .orders-container::-webkit-scrollbar { width: 4px; }
-        .orders-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
         .order-item {
             background: var(--panel);
-            padding: 16px;
-            border-radius: 14px;
+            width: 100%;
+            padding: 18px 25px;
+            border-radius: 16px;
             border: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-left: 5px solid var(--accent);
             animation: slideIn 0.3s ease-out;
-            position: relative;
-            overflow: hidden;
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .order-info { display: flex; flex-direction: column; gap: 4px; }
-        .order-num { font-size: 18px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+        .order-num { font-size: 22px; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: #fff; cursor: pointer; letter-spacing: 1px; }
         .order-meta { font-size: 12px; color: var(--text-dim); }
-        
-        .order-status {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-        }
+        .timer-val { color: var(--gold); font-size: 13px; font-weight: 600; }
+
+        .order-status { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 
         .otp-badge {
             background: var(--success);
             color: #000;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-weight: 800;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-weight: 900;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 18px;
-            animation: pulse 1.5s infinite;
+            font-size: 24px;
+            box-shadow: 0 0 15px var(--success);
+            cursor: pointer;
         }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); } 70% { box-shadow: 0 0 10px 10px rgba(0, 255, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); } }
 
         .btn-cancel {
             background: rgba(255, 62, 62, 0.1);
             color: var(--danger);
-            border: 1px solid rgba(255, 62, 62, 0.2);
-            padding: 4px 10px;
+            border: 1px solid var(--danger);
+            padding: 6px 14px;
             font-size: 11px;
-            border-radius: 6px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
         }
-        .btn-cancel:hover { background: var(--danger); color: #fff; }
-
-        .copy-all-btn {
-            width: 100%;
-            margin-bottom: 12px;
-            background: transparent;
-            border: 1px dashed var(--accent);
-            color: var(--accent);
-        }
-        .copy-all-btn:hover { background: var(--accent); color: #fff; }
+        .btn-cancel:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .notif {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            border-radius: 10px;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 12px;
             background: var(--accent);
             color: #fff;
-            transform: translateY(100px);
-            transition: 0.3s;
+            font-weight: 800;
+            transform: translateY(150px);
+            transition: 0.4s;
             z-index: 1000;
         }
         .notif.show { transform: translateY(0); }
 
-        .waiting-timer {
-            font-size: 11px;
-            color: var(--gold);
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .loading-ring { width: 24px; height: 24px; border: 3px solid rgba(188, 19, 254, 0.1); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        @media (max-width: 768px) {
-            .main-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <div class="logo">WEBBOWER ULTRA</div>
-        <div class="balance-card" id="balance-btn" onclick="updateBalance()">
-            💰 <span id="balance-val">0.00</span> USD
+        <div class="logo">WEBBOWER <span>ULTRA</span></div>
+        <div class="balance-card">
+            <span id="balance-val">0.00</span> <small style="color:var(--text-dim)">USD</small>
+            <div class="refresh-btn" onclick="updateBalance()">🔄</div>
         </div>
     </header>
 
     <div class="api-section">
-        <input type="password" id="api-key" placeholder="Masukkan API Key SMSBower..." onchange="saveKey()">
-        <button class="btn btn-primary" onclick="updateBalance()">CHECK</button>
+        <input type="password" id="api-key" placeholder="Enter SMSBower API Key..." onchange="saveKey()">
+        <button class="btn btn-primary" onclick="updateBalance()">SAVE & CHECK</button>
     </div>
 
     <div class="main-grid">
-        <div class="controls">
+        <div class="sidebar">
             <div class="card">
-                <h3 style="margin-bottom: 15px; font-size: 16px; color: var(--accent);">ULTRA BRUTAL CONFIG</h3>
-                <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 5px; display: block;">Pilih Negara:</label>
+                <h3 style="margin-bottom: 12px; font-size: 14px; color: var(--accent);">TARGET CONFIG</h3>
                 <select id="country-select">
                     <option value="vietnam" data-id="10" data-code="84" data-max="0.2">Vietnam 🇻🇳</option>
                     <option value="colombia" data-id="33" data-code="57" data-max="0.2">Colombia 🇨🇴</option>
                     <option value="philipina" data-id="4" data-code="63" data-max="0.2">Philipina 🇵🇭</option>
-                    <option value="mexico" data-id="54" data-code="52" data-max="1.0">Mexico 🇲🇽 (HOT)</option>
+                    <option value="mexico" data-id="54" data-code="52" data-max="1.0" selected>Mexico 🇲🇽 (HOT)</option>
                     <option value="brazil" data-id="73" data-code="55" data-max="0.5">Brazil 🇧🇷</option>
                 </select>
-
-                <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 5px; display: block;">Max Price ($):</label>
+                <label style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; display: block;">MAX PRICE ($):</label>
                 <input type="number" id="max-price" value="1.0" step="0.01" style="width: 100%; margin-bottom: 15px;">
-
-                <button id="start-btn" class="btn btn-primary" style="width: 100%;" onclick="toggleAutoBuy()">🚀 START BRUTAL BUY</button>
-                
-                <div class="stats-box" id="stats-ui" style="display: none;">
-                    <p>Status: <span id="status-text" style="color: var(--success);">MELESAT...</span></p>
-                    <p>Attempts: <span id="stat-att">0</span></p>
-                    <p>Dapat: <span id="stat-found">0</span></p>
-                    <p>Speed: <span id="stat-speed">0.0</span>/s</p>
+                <button id="start-btn" class="btn btn-primary" style="width: 100%; height: 55px;" onclick="toggleAutoBuy()">🚀 START BRUTAL BUY</button>
+                <div class="stats-box" id="stats-ui" style="display: none; margin-top: 15px;">
+                    <p>ATTEMPTS: <span id="stat-att">0</span></p>
+                    <p>FOUND: <span id="stat-found">0</span></p>
+                    <p>SPEED: <span id="stat-speed">0.0</span>/s</p>
                 </div>
             </div>
-
-            <div class="card">
-                <button class="btn copy-all-btn" onclick="copyAll()">📋 COPY SEMUA NOMOR</button>
-                <div style="font-size: 11px; color: var(--text-dim); text-align: center;">Hanya menyalin nomor yang 'Waiting OTP'</div>
-            </div>
+            <button class="btn" style="background: rgba(255,255,255,0.05); color: #fff; width: 100%;" onclick="copyAll()">📋 COPY ALL NUMBERS</button>
         </div>
 
-        <div class="orders-section">
+        <div class="content">
             <div class="orders-container" id="orders-list">
-                <div style="text-align: center; color: var(--text-dim); margin-top: 50px;">Belum ada nomor yang didapatkan.</div>
+                <div style="text-align: center; color: var(--text-dim); margin-top: 80px;">READY FOR SNIPING 🇲🇽</div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="notif" id="notif">Copied to clipboard!</div>
+<div class="notif" id="notif">Copied!</div>
 
 <script>
     let isRunning = false;
@@ -319,10 +269,8 @@
         const res = await reqApi('getBalance');
         if (res && res.includes('ACCESS_BALANCE')) {
             const b = res.split(':')[1];
-            document.getElementById('balance-val').innerText = b;
-            showNotif('Balance Updated: $' + b);
-        } else {
-            showNotif('API Key Error / Invalid');
+            document.getElementById('balance-val').innerText = parseFloat(b).toFixed(2);
+            showNotif('Balance Refreshed: $' + b);
         }
     }
 
@@ -334,17 +282,17 @@
     }
 
     function toggleAutoBuy() {
-        if (!apiKey) { alert('Masukkan API Key dulu!'); return; }
+        if (!apiKey) { alert('Enter API Key!'); return; }
         isRunning = !isRunning;
         const btn = document.getElementById('start-btn');
         const statsUi = document.getElementById('stats-ui');
 
         if (isRunning) {
-            btn.innerText = '🛑 STOP AUTO BUY';
+            btn.innerText = '🛑 STOP BRUTAL BUY';
             btn.className = 'btn btn-stop';
             statsUi.style.display = 'block';
             resetStats();
-            startBrutalWorkers();
+            startBrutalLoop();
         } else {
             btn.innerText = '🚀 START BRUTAL BUY';
             btn.className = 'btn btn-primary';
@@ -363,91 +311,87 @@
         document.getElementById('stat-speed').innerText = (stats.att / Math.max(el, 1)).toFixed(1);
     }
 
-    function startBrutalWorkers() {
+    function startBrutalLoop() {
         const countrySelect = document.getElementById('country-select');
         const countryId = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-id');
-        const countryCode = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-code');
-        const countryName = countrySelect.value;
         const maxPrice = document.getElementById('max-price').value;
 
-        // Loop tembak super agresif (Ultra Brutal)
-        const workerLoop = setInterval(async () => {
-            if (!isRunning) { clearInterval(workerLoop); return; }
-            
+        const loop = setInterval(async () => {
+            if (!isRunning) { clearInterval(loop); return; }
             stats.att++;
-            if (stats.att % 10 === 0) updateStatsUi();
+            if (stats.att % 20 === 0) updateStatsUi();
 
-            doBuy(countryId, maxPrice, countryCode, countryName);
-            
+            const res = await reqApi('getNumber', { service: 'wa', country: countryId, maxPrice: maxPrice });
+            if (res && res.includes('ACCESS_NUMBER')) {
+                const [_, id, num] = res.split(':');
+                stats.found++;
+                addOrder(id, num, maxPrice);
+                updateStatsUi();
+                new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play().catch(()=>{});
+            }
         }, 5); 
     }
 
-    async function doBuy(cId, mP, cCode, cName) {
-        const res = await reqApi('getNumber', { service: 'wa', country: cId, maxPrice: mP });
-        
-        if (res && res.includes('ACCESS_NUMBER')) {
-            const [_, id, num] = res.split(':');
-            stats.found++;
-            addOrder(id, num, cCode, cName, mP);
-            updateStatsUi();
-        } else if (res && res.includes('NO_BALANCE')) {
-            isRunning = false;
-            toggleAutoBuy();
-            alert('SALDO HABIS!');
-        }
-    }
-
-    function addOrder(id, num, code, country, price) {
-        const order = { id, number: num, code, country, price, status: 'waiting', otp: '', time: Date.now() };
+    function addOrder(id, num, price) {
+        const order = { id, number: num, price, status: 'waiting', otp: '', time: Date.now() };
         orders.unshift(order);
         renderOrders();
     }
 
     function renderOrders() {
         const list = document.getElementById('orders-list');
-        if (orders.length === 0) {
-            list.innerHTML = `<div style="text-align: center; color: var(--text-dim); margin-top: 50px;">Belum ada nomor yang didapatkan.</div>`;
-            return;
-        }
-
+        if (orders.length === 0) return;
         list.innerHTML = orders.map(o => `
             <div class="order-item">
                 <div class="order-info">
-                    <div class="order-num">+${o.number}</div>
-                    <div class="order-meta">${o.country.toUpperCase()} | $${o.price} | ID: ${o.id}</div>
-                    ${o.status === 'waiting' ? `<div class="waiting-timer" id="timer-${o.id}">Pengecekan OTP...</div>` : ''}
+                    <div class="order-num" onclick="copyText('${o.number}')">+${o.number}</div>
+                    <div class="order-meta">ID: ${o.id} | $${o.price} | <span class="timer-val" id="timer-${o.id}">20:00</span></div>
                 </div>
                 <div class="order-status">
-                    ${o.otp ? `<div class="otp-badge">${o.otp}</div>` : 
-                      o.status === 'waiting' ? `<img src="https://i.gifer.com/ZZ5H.gif" width="20" style="filter: invert(1);">` : 
-                      `<span style="color: var(--text-dim);">${o.status.toUpperCase()}</span>`}
-                    
-                    ${o.status === 'waiting' ? `<button class="btn btn-cancel" onclick="cancelOrder('${o.id}')">CANCEL</button>` : ''}
+                    ${o.otp ? `<div class="otp-badge" onclick="copyText('${o.otp}')">${o.otp}</div>` : 
+                      o.status === 'waiting' ? `<div class="loading-ring"></div>` : 
+                      `<span style="color:var(--text-dim);font-weight:800">${o.status.toUpperCase()}</span>`}
+                    ${o.status === 'waiting' ? `<button class="btn-cancel" id="btn-can-${o.id}" onclick="cancelOrder('${o.id}')" disabled>WAITING (2m)</button>` : ''}
                 </div>
             </div>
         `).join('');
     }
 
+    // TIMER & OTP WATCHER
     setInterval(async () => {
+        const now = Date.now();
         const waiting = orders.filter(o => o.status === 'waiting');
+        
         for (const o of waiting) {
+            const el = Math.floor((now - o.time) / 1000);
+            const rem = 1200 - el;
+            const tEl = document.getElementById(`timer-${o.id}`);
+            if (tEl) {
+                if (rem <= 0) tEl.innerText = "EXPIRED";
+                else tEl.innerText = `${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`;
+            }
+
+            const cBtn = document.getElementById(`btn-can-${o.id}`);
+            if (cBtn && el >= 120) {
+                cBtn.disabled = false;
+                cBtn.innerText = "✕ CANCEL";
+                cBtn.style.background = "rgba(255, 62, 62, 0.2)";
+            } else if (cBtn) {
+                cBtn.innerText = `WAIT (${120 - el}s)`;
+            }
+
             const res = await reqApi('getStatus', { id: o.id });
             if (res && res.includes('STATUS_OK')) {
+                const otp = res.split(':')[1];
                 o.status = 'done';
-                o.otp = res.split(':')[1];
+                o.otp = otp;
+                renderOrders();
+                new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3').play().catch(()=>{});
                 reqApi('setStatus', { id: o.id, status: 6 });
-                renderOrders();
-                playNotif();
-            } else if (res && (res.includes('STATUS_CANCEL') || res.includes('STATUS_WAIT_RETRY'))) {
-                // Keep waiting
             }
-            
-            if ((Date.now() - o.time) > 1200000) {
-                o.status = 'expired';
-                renderOrders();
-            }
+            if (rem <= 0) { o.status = 'expired'; renderOrders(); }
         }
-    }, 4000);
+    }, 1000);
 
     async function cancelOrder(id) {
         const res = await reqApi('setStatus', { id, status: 8 });
@@ -455,32 +399,18 @@
             const o = orders.find(x => x.id === id);
             if (o) o.status = 'cancelled';
             renderOrders();
-            showNotif('Order Dibatalkan.');
+            showNotif('ORDER CANCELLED');
         } else {
-            showNotif('Tunggu 2 menit untuk cancel');
+            showNotif('CANCEL FAILED');
         }
     }
 
+    function copyText(txt) { navigator.clipboard.writeText(txt); showNotif('COPIED!'); }
     function copyAll() {
-        const toCopy = orders
-            .filter(o => o.status === 'waiting' || o.otp !== '')
-            .map(o => o.number + (o.otp ? ` | OTP: ${o.otp}` : ''))
-            .join('\n');
-        
-        if (!toCopy) { showNotif('Tidak ada nomor.'); return; }
-        
-        navigator.clipboard.writeText(toCopy);
-        showNotif('Semua Nomor Disalin!');
+        const t = orders.filter(o => o.status === 'waiting').map(o => o.number).join('\n');
+        if (t) { navigator.clipboard.writeText(t); showNotif('ALL COPIED!'); }
     }
-
-    function playNotif() {
-        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-        audio.play().catch(e => {});
-    }
-
-    setInterval(() => { if (apiKey) updateBalance(); }, 60000);
-
+    setInterval(updateBalance, 60000);
 </script>
-
 </body>
 </html>
