@@ -21,6 +21,7 @@ def proxy():
         
     params = request.args.to_dict()
     try:
+        # Gunakan timeout yang sedikit lebih longgar untuk proxy agar tidak sering timeout
         r = requests.get(API_BASE, params=params, timeout=10)
         return r.text
     except Exception as e:
