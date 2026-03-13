@@ -1,157 +1,308 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebBower — SMSBower Kembaran Hayuk1</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>WebBower — SMSBower ULTRA BRUTAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg-primary: #0a0a1a;
-            --bg-secondary: #12122a;
-            --bg-card: rgba(22, 22, 50, 0.8);
-            --border: rgba(99, 102, 241, 0.2);
-            --accent: #6366f1;
-            --cyan: #06b6d4;
-            --green: #10b981;
-            --red: #ef4444;
-            --yellow: #f59e0b;
-            --text: #e2e8f0;
-            --text-dim: #94a3b8;
-            --text-bright: #f8fafc;
+            --bg: #0a0a0c;
+            --panel: #141417;
+            --accent: #bc13fe;
+            --accent-glow: rgba(188, 19, 254, 0.4);
+            --gold: #ffb700;
+            --text: #e0e0e0;
+            --text-dim: #909090;
+            --success: #00ff88;
+            --danger: #ff3e3e;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-        
-        input { width: 100%; padding: 14px 18px; background: rgba(15, 15, 35, 0.8); border: 1px solid var(--border); border-radius: 12px; color: var(--text-bright); outline: none; margin-bottom: 16px; font-family: 'Inter', sans-serif; }
-        .btn { padding: 14px 28px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
-        .btn-primary { background: linear-gradient(135deg, var(--accent), #818cf8); color: white; }
-        .btn-success { background: linear-gradient(135deg, var(--green), #34d399); color: white; width: 100%; height: 55px; font-size: 16px; }
-        .btn-danger { background: linear-gradient(135deg, var(--red), #f87171); color: white; width: 100%; height: 55px; font-size: 16px; }
-        .btn-ghost { background: rgba(99, 102, 241, 0.1); color: var(--accent); border: 1px solid var(--border); }
-        
-        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 15px; text-align:center; }
-        .country-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 20px 0; }
-        .country-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 15px; cursor: pointer; text-align: center; transition: 0.3s; }
-        .country-card.selected { border-color: var(--accent); background: rgba(99,102,241,0.2); transform: translateY(-3px); }
-        
-        .order-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-left: 4px solid var(--accent); animation: slideIn 0.3s ease-out; }
-        .order-card.done { border-left-color: var(--green); }
-        .cc-code { color: var(--accent); font-weight: 900; font-size: 18px; cursor: pointer; }
-        .phone-num { color: #fff; font-weight: 900; font-size: 18px; margin-left:8px; cursor: pointer; }
-        .otp-box { background: rgba(16,185,129,0.2); color: var(--green); padding: 10px 20px; border-radius: 10px; font-weight: 900; font-size: 26px; cursor:pointer; border: 1px solid var(--green); }
-        
-        .toast-box { position: fixed; top: 20px; right: 20px; z-index: 9999; }
-        .toast { background: var(--bg-card); padding: 12px 24px; border-radius: 12px; border: 1px solid var(--accent); margin-bottom: 8px; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .hidden { display: none !important; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        #abStats { margin-top: 15px; padding: 15px; background: rgba(6,182,212,0.1); border: 1px solid var(--cyan); border-radius: 12px; font-weight:700; color:var(--cyan); text-align:center; display:flex; justify-content:space-around; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, #200a2e 0%, transparent 50%);
+            min-height: 100vh;
+        }
 
-        #oList { min-height: 100px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .balance-card {
+            background: var(--glass);
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .balance-card:hover { border-color: var(--accent); }
+        .balance-card span { color: var(--gold); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+        .api-section {
+            background: var(--panel);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            background: #000;
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--accent-glow); }
+        .btn-stop { background: var(--danger); color: #fff; }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card {
+            background: var(--panel);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        select {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 10px;
+            color: #fff;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        .stats-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .stats-box p { display: flex; justify-content: space-between; }
+        .stats-box span { color: var(--accent); font-weight: 600; }
+
+        .orders-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .orders-container::-webkit-scrollbar { width: 4px; }
+        .orders-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .order-item {
+            background: var(--panel);
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        .order-info { display: flex; flex-direction: column; gap: 4px; }
+        .order-num { font-size: 18px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+        .order-meta { font-size: 12px; color: var(--text-dim); }
+        
+        .order-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .otp-badge {
+            background: var(--success);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); } 70% { box-shadow: 0 0 10px 10px rgba(0, 255, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); } }
+
+        .btn-cancel {
+            background: rgba(255, 62, 62, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 62, 62, 0.2);
+            padding: 4px 10px;
+            font-size: 11px;
+            border-radius: 6px;
+        }
+        .btn-cancel:hover { background: var(--danger); color: #fff; }
+
+        .copy-all-btn {
+            width: 100%;
+            margin-bottom: 12px;
+            background: transparent;
+            border: 1px dashed var(--accent);
+            color: var(--accent);
+        }
+        .copy-all-btn:hover { background: var(--accent); color: #fff; }
+
+        .notif {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(100px);
+            transition: 0.3s;
+            z-index: 1000;
+        }
+        .notif.show { transform: translateY(0); }
+
+        .waiting-timer {
+            font-size: 11px;
+            color: var(--gold);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h1 style="font-size:24px;">🚀 WebBower (Hayuk Style)</h1>
-        <div style="background:rgba(16,185,129,0.1); padding:10px 20px; border-radius:12px; border:1px solid var(--green)">
-            <b id="balVal" style="color:var(--green); font-size:18px;">0.00</b> <span style="font-size:12px">USD</span>
-            <button onclick="updateBalance()" style="background:none; border:none; cursor:pointer; color:var(--green); margin-left:10px; font-size:18px;">🔄</button>
+    <header>
+        <div class="logo">WEBBOWER ULTRA</div>
+        <div class="balance-card" id="balance-btn" onclick="updateBalance()">
+            💰 <span id="balance-val">0.00</span> USD
         </div>
+    </header>
+
+    <div class="api-section">
+        <input type="password" id="api-key" placeholder="Masukkan API Key SMSBower..." onchange="saveKey()">
+        <button class="btn btn-primary" onclick="updateBalance()">CHECK</button>
     </div>
 
-    <div style="background:var(--bg-card); padding:20px; border-radius:16px; border:1px solid var(--border); display:flex; gap:10px; margin-bottom:24px;">
-        <input type="password" id="apiInput" placeholder="Masukkan API Key SMSBower" style="margin-bottom:0" onchange="saveKey()">
-        <button class="btn btn-primary" onclick="updateBalance()">Simpan Key</button>
-    </div>
+    <div class="main-grid">
+        <div class="controls">
+            <div class="card">
+                <h3 style="margin-bottom: 15px; font-size: 16px; color: var(--accent);">ULTRA BRUTAL CONFIG</h3>
+                <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 5px; display: block;">Pilih Negara:</label>
+                <select id="country-select">
+                    <option value="vietnam" data-id="10" data-code="84" data-max="0.2">Vietnam 🇻🇳</option>
+                    <option value="colombia" data-id="33" data-code="57" data-max="0.2">Colombia 🇨🇴</option>
+                    <option value="philipina" data-id="4" data-code="63" data-max="0.2">Philipina 🇵🇭</option>
+                    <option value="mexico" data-id="54" data-code="52" data-max="1.0">Mexico 🇲🇽 (HOT)</option>
+                    <option value="brazil" data-id="73" data-code="55" data-max="0.5">Brazil 🇧🇷</option>
+                </select>
 
-    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:24px;">
-        <div class="stat-card">Total<br><b id="statT" style="font-size:20px">0</b></div>
-        <div class="stat-card" style="color:var(--green)">OTP<br><b id="statO" style="font-size:20px">0</b></div>
-        <div class="stat-card" style="color:var(--yellow)">Wait<br><b id="statW" style="font-size:20px">0</b></div>
-        <div class="stat-card" style="color:var(--red)">Cancel<br><b id="statC" style="font-size:20px">0</b></div>
-    </div>
+                <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 5px; display: block;">Max Price ($):</label>
+                <input type="number" id="max-price" value="1.0" step="0.01" style="width: 100%; margin-bottom: 15px;">
 
-    <div class="country-grid" id="cGrid"></div>
+                <button id="start-btn" class="btn btn-primary" style="width: 100%;" onclick="toggleAutoBuy()">🚀 START BRUTAL BUY</button>
+                
+                <div class="stats-box" id="stats-ui" style="display: none;">
+                    <p>Status: <span id="status-text" style="color: var(--success);">MELESAT...</span></p>
+                    <p>Attempts: <span id="stat-att">0</span></p>
+                    <p>Dapat: <span id="stat-found">0</span></p>
+                    <p>Speed: <span id="stat-speed">0.0</span>/s</p>
+                </div>
+            </div>
 
-    <div style="background:var(--bg-card); padding:24px; border-radius:20px; border:2px solid var(--accent); margin-bottom:24px;">
-        <h3 id="selName" style="margin-bottom:16px; font-weight:800; font-size:20px;">🛒 Pilih Negara Dulu</h3>
-        
-        <div style="margin-bottom: 20px;">
-            <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 5px; display: block;">Max Price ($):</label>
-            <input type="number" id="maxPriceInput" value="1.0" step="0.01" style="width: 100px; padding: 8px; margin-bottom: 0;">
+            <div class="card">
+                <button class="btn copy-all-btn" onclick="copyAll()">📋 COPY SEMUA NOMOR</button>
+                <div style="font-size: 11px; color: var(--text-dim); text-align: center;">Hanya menyalin nomor yang 'Waiting OTP'</div>
+            </div>
         </div>
 
-        <div id="btnContainer" style="display:flex; gap:10px;">
-            <button class="btn btn-success" id="btnA" onclick="toggleAutoBuy()" style="flex:1;">🚀 START BRUTAL</button>
-        </div>
-        <button class="btn btn-danger hidden" id="btnS" onclick="toggleAutoBuy()" style="width:100%;">🛑 STOP ACTION</button>
-        
-        <div id="abStats" class="hidden">
-            <div><span style="font-size:12px; color:var(--text-dim); display:block;">Attempts</span><span id="abAtt">0</span></div>
-            <div><span style="font-size:12px; color:var(--text-dim); display:block;">Found</span><span id="abFound" style="color:var(--green);">0</span></div>
-            <div><span style="font-size:12px; color:var(--text-dim); display:block;">Speed</span><span id="abSpd">0</span>/s</div>
+        <div class="orders-section">
+            <div class="orders-container" id="orders-list">
+                <div style="text-align: center; color: var(--text-dim); margin-top: 50px;">Belum ada nomor yang didapatkan.</div>
+            </div>
         </div>
     </div>
-
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h3 style="font-size:16px; color:var(--accent);">📋 Antrean (Sedang Menunggu)</h3>
-        <div style="display:flex; gap:8px;">
-            <button class="btn btn-ghost" style="padding:8px 16px; font-size:12px; color:var(--green); border-color:var(--green);" onclick="copyAllNumbers()">📋 Salin Semua Nomer</button>
-        </div>
-    </div>
-    <div id="oList"></div>
 </div>
 
-<div class="toast-box" id="tBox"></div>
+<div class="notif" id="notif">Copied to clipboard!</div>
 
 <script>
     let isRunning = false;
     let apiKey = localStorage.getItem('webbower_key') || '';
-    let selCountry = 'vietnam';
     let orders = [];
     let stats = { att: 0, found: 0, startTime: 0 };
-    let counts = { t:0, o:0, w:0, c:0 };
 
-    const COUNTRIES = {
-        vietnam: { n: 'Vietnam', f: '🇻🇳', id: '10', code: '84', max: 0.2 },
-        colombia: { n: 'Colombia', f: '🇨🇴', id: '33', code: '57', max: 0.2 },
-        philipina: { n: 'Philipina', f: '🇵🇭', id: '4', code: '63', max: 0.2 },
-        mexico: { n: 'Mexico', f: '🇲🇽', id: '54', code: '52', max: 1.0 },
-        brazil: { n: 'Brazil', f: '🇧🇷', id: '73', code: '55', max: 0.5 }
-    };
-
-    // Init UI
-    if (apiKey) document.getElementById('apiInput').value = apiKey;
-    
-    const cGrid = document.getElementById('cGrid');
-    Object.entries(COUNTRIES).forEach(([k, v]) => {
-        const d = document.createElement('div');
-        d.className = `country-card ${k === selCountry ? 'selected' : ''}`;
-        d.id = `card_${k}`;
-        d.onclick = () => selectCountry(k);
-        d.innerHTML = `<div style="font-size:24px">${v.f}</div><div style="font-size:14px; font-weight:700">${v.n}</div>`;
-        cGrid.appendChild(d);
-    });
-
-    function selectCountry(k) {
-        selCountry = k;
-        document.querySelectorAll('.country-card').forEach(x => x.classList.remove('selected'));
-        document.getElementById(`card_${k}`).classList.add('selected');
-        document.getElementById('selName').innerText = `🛒 Nembak Nomor ${COUNTRIES[k].n}`;
-        document.getElementById('maxPriceInput').value = COUNTRIES[k].max;
-    }
-    selectCountry('vietnam');
+    if (apiKey) document.getElementById('api-key').value = apiKey;
 
     function saveKey() {
-        apiKey = document.getElementById('apiInput').value.trim();
+        apiKey = document.getElementById('api-key').value.trim();
         localStorage.setItem('webbower_key', apiKey);
-        toast('✅ API Key Disimpan!');
-        updateBalance();
     }
 
     async function reqApi(action, extra = {}) {
@@ -164,177 +315,170 @@
     }
 
     async function updateBalance() {
+        saveKey();
         const res = await reqApi('getBalance');
         if (res && res.includes('ACCESS_BALANCE')) {
             const b = res.split(':')[1];
-            document.getElementById('balVal').innerText = b;
+            document.getElementById('balance-val').innerText = b;
+            showNotif('Balance Updated: $' + b);
+        } else {
+            showNotif('API Key Error / Invalid');
         }
+    }
+
+    function showNotif(txt) {
+        const n = document.getElementById('notif');
+        n.innerText = txt;
+        n.classList.add('show');
+        setTimeout(() => n.classList.remove('show'), 2000);
     }
 
     function toggleAutoBuy() {
-        if (!apiKey) { toast('❌ Masukkan API Key dulu!'); return; }
+        if (!apiKey) { alert('Masukkan API Key dulu!'); return; }
         isRunning = !isRunning;
-        
-        const btnA = document.getElementById('btnA');
-        const btnS = document.getElementById('btnS');
-        const abStats = document.getElementById('abStats');
+        const btn = document.getElementById('start-btn');
+        const statsUi = document.getElementById('stats-ui');
 
         if (isRunning) {
-            btnA.classList.add('hidden');
-            btnS.classList.remove('hidden');
-            abStats.classList.remove('hidden');
-            stats = { att: 0, found: 0, startTime: Date.now() };
-            toast('🔥 Mode Brutal Aktif!');
-            startWorker();
+            btn.innerText = '🛑 STOP AUTO BUY';
+            btn.className = 'btn btn-stop';
+            statsUi.style.display = 'block';
+            resetStats();
+            startBrutalWorkers();
         } else {
-            btnA.classList.remove('hidden');
-            btnS.classList.add('hidden');
-            toast('🛑 Mode Brutal Berhenti.');
+            btn.innerText = '🚀 START BRUTAL BUY';
+            btn.className = 'btn btn-primary';
         }
     }
 
-    async function startWorker() {
-        while (isRunning) {
-            stats.att++;
-            updateStatsUi();
-            
-            const c = COUNTRIES[selCountry];
-            const maxP = document.getElementById('maxPriceInput').value;
-            
-            try {
-                const res = await reqApi('getNumber', { service: 'wa', country: c.id, maxPrice: maxP });
-                if (res.includes('ACCESS_NUMBER')) {
-                    const [_, id, num] = res.split(':');
-                    stats.found++;
-                    addOrder(id, num, c.code, maxP);
-                } else if (res.includes('NO_BALANCE')) {
-                    isRunning = false;
-                    toggleAutoBuy();
-                    alert('💸 SALDO HABIS!');
-                    break;
-                }
-            } catch(e) {}
-            
-            // Jeda sedikit biar gak kena limit Cloudflare/API tapi tetep ngebut
-            await new Promise(r => setTimeout(r, 50)); 
-        }
+    function resetStats() {
+        stats = { att: 0, found: 0, startTime: Date.now() };
+        updateStatsUi();
     }
 
     function updateStatsUi() {
         const el = (Date.now() - stats.startTime) / 1000;
-        document.getElementById('abAtt').innerText = stats.att;
-        document.getElementById('abFound').innerText = stats.found;
-        document.getElementById('abSpd').innerText = (stats.att / Math.max(el, 1)).toFixed(1);
+        document.getElementById('stat-att').innerText = stats.att;
+        document.getElementById('stat-found').innerText = stats.found;
+        document.getElementById('stat-speed').innerText = (stats.att / Math.max(el, 1)).toFixed(1);
     }
 
-    function addOrder(id, num, code, price) {
-        const o = { id, number: num, code, price, status: 'waiting', otp: '', time: Date.now() / 1000 };
-        orders.push(o);
-        counts.t++; counts.w++;
-        updateCounters();
-        renderOrder(o);
+    function startBrutalWorkers() {
+        const countrySelect = document.getElementById('country-select');
+        const countryId = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-id');
+        const countryCode = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-code');
+        const countryName = countrySelect.value;
+        const maxPrice = document.getElementById('max-price').value;
+
+        // Loop tembak super agresif (Ultra Brutal)
+        const workerLoop = setInterval(async () => {
+            if (!isRunning) { clearInterval(workerLoop); return; }
+            
+            stats.att++;
+            if (stats.att % 10 === 0) updateStatsUi();
+
+            doBuy(countryId, maxPrice, countryCode, countryName);
+            
+        }, 5); 
     }
 
-    function renderOrder(d) {
-        const list = document.getElementById('oList');
-        const card = document.createElement('div');
-        card.className = 'order-card';
-        card.id = `order_${d.id}`;
+    async function doBuy(cId, mP, cCode, cName) {
+        const res = await reqApi('getNumber', { service: 'wa', country: cId, maxPrice: mP });
         
-        // Bersihkan nomor dari country code (seperti hayuk1)
-        let body = d.number;
-        if(body.startsWith(d.code)) body = body.slice(d.code.length);
-
-        card.innerHTML = `
-            <div style="display:flex; align-items:center;">
-                <span class="cc-code" onclick="copy('${d.code}')">${d.code}</span>
-                <span class="phone-num" onclick="copy('${body}')">${body}</span>
-                <div style="margin-left:15px; font-size:12px; color:var(--text-dim);">💰 <b>${d.price}</b></div>
-            </div>
-            <div id="meta_${d.id}" style="text-align:right;">
-                <div id="time_${d.id}" style="font-size:13px; color:var(--yellow)">20:00</div>
-                <button class="btn btn-ghost" style="padding:4px 8px; font-size:11px; margin-top:5px; color:var(--red); border-color:var(--red);" id="can_${d.id}" onclick="cancelOrder('${d.id}')">✕ Cancel</button>
-            </div>
-        `;
-        list.prepend(card);
-        startTimer(d.id, d.time);
-    }
-
-    function startTimer(id, st) {
-        const interval = setInterval(() => {
-            const el = (Date.now() / 1000) - st;
-            const rem = 1200 - el;
-            if (rem <= 0) { clearInterval(interval); return; }
-            const tEl = document.getElementById(`time_${id}`);
-            if (tEl) tEl.innerText = `${Math.floor(rem / 60)}:${Math.floor(rem % 60).toString().padStart(2, '0')}`;
-        }, 1000);
-    }
-
-    async function cancelOrder(id) {
-        // SMSBower setStatus 8 = Cancel
-        const res = await reqApi('setStatus', { id, status: 8 });
-        if (res.includes('ACCESS_CANCEL')) {
-            const card = document.getElementById(`order_${id}`);
-            if (card) {
-                card.style.opacity = '0.3';
-                card.querySelector('#meta_' + id).innerHTML = `<span style="color:var(--red); font-size:12px; font-weight:900;">CANCELLED</span>`;
-                counts.w--; counts.c++;
-                updateCounters();
-                setTimeout(() => card.remove(), 3000);
-            }
-            toast('🚫 Order Dibatalkan');
-        } else {
-            toast('⚠️ Tunggu 2 menit untuk cancel');
+        if (res && res.includes('ACCESS_NUMBER')) {
+            const [_, id, num] = res.split(':');
+            stats.found++;
+            addOrder(id, num, cCode, cName, mP);
+            updateStatsUi();
+        } else if (res && res.includes('NO_BALANCE')) {
+            isRunning = false;
+            toggleAutoBuy();
+            alert('SALDO HABIS!');
         }
     }
 
-    // OTP POLLING (Persis Hayuk1)
+    function addOrder(id, num, code, country, price) {
+        const order = { id, number: num, code, country, price, status: 'waiting', otp: '', time: Date.now() };
+        orders.unshift(order);
+        renderOrders();
+    }
+
+    function renderOrders() {
+        const list = document.getElementById('orders-list');
+        if (orders.length === 0) {
+            list.innerHTML = `<div style="text-align: center; color: var(--text-dim); margin-top: 50px;">Belum ada nomor yang didapatkan.</div>`;
+            return;
+        }
+
+        list.innerHTML = orders.map(o => `
+            <div class="order-item">
+                <div class="order-info">
+                    <div class="order-num">+${o.number}</div>
+                    <div class="order-meta">${o.country.toUpperCase()} | $${o.price} | ID: ${o.id}</div>
+                    ${o.status === 'waiting' ? `<div class="waiting-timer" id="timer-${o.id}">Pengecekan OTP...</div>` : ''}
+                </div>
+                <div class="order-status">
+                    ${o.otp ? `<div class="otp-badge">${o.otp}</div>` : 
+                      o.status === 'waiting' ? `<img src="https://i.gifer.com/ZZ5H.gif" width="20" style="filter: invert(1);">` : 
+                      `<span style="color: var(--text-dim);">${o.status.toUpperCase()}</span>`}
+                    
+                    ${o.status === 'waiting' ? `<button class="btn btn-cancel" onclick="cancelOrder('${o.id}')">CANCEL</button>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
     setInterval(async () => {
-        const active = orders.filter(o => o.status === 'waiting');
-        for (const o of active) {
+        const waiting = orders.filter(o => o.status === 'waiting');
+        for (const o of waiting) {
             const res = await reqApi('getStatus', { id: o.id });
             if (res && res.includes('STATUS_OK')) {
-                const otp = res.split(':')[1];
                 o.status = 'done';
-                o.otp = otp;
-                counts.w--; counts.o++;
-                updateCounters();
-                
-                const card = document.getElementById(`order_${o.id}`);
-                if (card) {
-                    card.classList.add('done');
-                    const meta = card.querySelector('#meta_' + o.id);
-                    meta.innerHTML = `<div class="otp-box" onclick="copy('${otp}')">${otp}</div>`;
-                }
-                playBeep();
-                toast('🎉 OTP MASUK: ' + otp);
-                // Set status 6 (Finish) di SMSBower
+                o.otp = res.split(':')[1];
                 reqApi('setStatus', { id: o.id, status: 6 });
+                renderOrders();
+                playNotif();
+            } else if (res && (res.includes('STATUS_CANCEL') || res.includes('STATUS_WAIT_RETRY'))) {
+                // Keep waiting
+            }
+            
+            if ((Date.now() - o.time) > 1200000) {
+                o.status = 'expired';
+                renderOrders();
             }
         }
-    }, 5000);
+    }, 4000);
 
-    function updateCounters() {
-        document.getElementById('statT').innerText = counts.t;
-        document.getElementById('statO').innerText = counts.o;
-        document.getElementById('statW').innerText = counts.w;
-        document.getElementById('statC').innerText = counts.c;
+    async function cancelOrder(id) {
+        const res = await reqApi('setStatus', { id, status: 8 });
+        if (res && res.includes('ACCESS_CANCEL')) {
+            const o = orders.find(x => x.id === id);
+            if (o) o.status = 'cancelled';
+            renderOrders();
+            showNotif('Order Dibatalkan.');
+        } else {
+            showNotif('Tunggu 2 menit untuk cancel');
+        }
     }
 
-    function copy(t) { navigator.clipboard.writeText(t); toast(`📋 Copied: ${t}`); }
-    function toast(m) { const x = document.createElement('div'); x.className='toast'; x.innerText=m; document.getElementById('tBox').appendChild(x); setTimeout(()=>x.remove(), 3000); }
-    function playBeep() { try { const a=new (window.AudioContext || window.webkitAudioContext)(), o=a.createOscillator(), g=a.createGain(); o.connect(g); g.connect(a.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.00001, a.currentTime+1); } catch(e){} }
-
-    function copyAllNumbers() {
-        const nums = orders.filter(o => o.status === 'waiting').map(o => o.number).join('\n');
-        if (!nums) return toast('❌ Tidak ada nomor aktif');
-        navigator.clipboard.writeText(nums);
-        toast('📋 Semua nomor disalin!');
+    function copyAll() {
+        const toCopy = orders
+            .filter(o => o.status === 'waiting' || o.otp !== '')
+            .map(o => o.number + (o.otp ? ` | OTP: ${o.otp}` : ''))
+            .join('\n');
+        
+        if (!toCopy) { showNotif('Tidak ada nomor.'); return; }
+        
+        navigator.clipboard.writeText(toCopy);
+        showNotif('Semua Nomor Disalin!');
     }
 
-    // Auto Refresh Balance
-    setInterval(updateBalance, 30000);
-    if(apiKey) updateBalance();
+    function playNotif() {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        audio.play().catch(e => {});
+    }
+
+    setInterval(() => { if (apiKey) updateBalance(); }, 60000);
 
 </script>
 
