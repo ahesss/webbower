@@ -169,6 +169,7 @@
                     <p>ATTEMPTS: <span id="stat-att">0</span></p>
                     <p>FOUND: <span id="stat-found">0</span></p>
                     <p>SPEED: <span id="stat-speed">0.0</span>/s</p>
+                    <p>STATUS: <span id="api-status" style="font-size: 10px; color: var(--text-dim);">IDLE</span></p>
                 </div>
             </div>
             <button class="btn" style="background: rgba(255,255,255,0.05); color: #fff; width: 100%;" onclick="copyAll()">📋 COPY ALL NUMBERS</button>
@@ -233,10 +234,12 @@
             btn.className = 'btn btn-stop';
             statsUi.style.display = 'block';
             resetStats();
-            startBrutalLoop();
+            // Start 5 concurrent workers for "War Mode"
+            for(let i=0; i<5; i++) startBrutalLoop();
         } else {
             btn.innerText = '🚀 START BRUTAL BUY';
             btn.className = 'btn btn-primary';
+            document.getElementById('api-status').innerText = 'STOPPED';
         }
     }
 
@@ -256,24 +259,35 @@
         const countrySelect = document.getElementById('country-select');
         const countryId = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-id');
         const mP = document.getElementById('max-price').value;
+        const statusEl = document.getElementById('api-status');
 
         while (isRunning) {
             stats.att++;
             if (stats.att % 10 === 0) updateStatsUi();
 
             const res = await reqApi('getNumber', { service: 'wa', country: countryId, maxPrice: mP });
+            
             if (res && res.includes('ACCESS_NUMBER')) {
-                const [_, id, num] = res.split(':');
-                stats.found++;
-                addOrder(id, num, mP);
-                updateStatsUi();
-                updateBalance();
-                new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play().catch(()=>{});
+                const parts = res.split(':');
+                if (parts.length >= 3) {
+                    const id = parts[1];
+                    const num = parts[2];
+                    stats.found++;
+                    addOrder(id, num, mP);
+                    updateStatsUi();
+                    updateBalance();
+                    statusEl.innerText = "NUM FOUND!";
+                    new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play().catch(()=>{});
+                }
             } else if (res && res.includes('NO_BALANCE')) {
                 isRunning = false; toggleAutoBuy(); alert('SALDO HABIS!'); break;
+            } else {
+                // Update status display (NO_NUMBERS, BANNED, etc)
+                if (res && res.length < 30) statusEl.innerText = res;
             }
 
-            await new Promise(r => setTimeout(r, 5));
+            // High-speed loop (0ms delay for "War Mode")
+            await new Promise(r => setTimeout(r, 1));
         }
     }
 
@@ -302,12 +316,14 @@
         `).join('');
     }
 
-    // INDEPENDENT TICK FOR UI
+    // PARALLEL TICK FOR UI & OTP
     setInterval(async () => {
         const now = Date.now();
         const waiting = orders.filter(o => o.status === 'waiting');
-        
-        for (const o of waiting) {
+        if (waiting.length === 0) return;
+
+        // Check OTP for all waiting orders in parallel (BULLSEYE!)
+        await Promise.all(waiting.map(async (o) => {
             const elapsed = Math.floor((now - o.time) / 1000);
             const remain = 1200 - elapsed;
             
@@ -328,6 +344,7 @@
                 }
             }
 
+            // Independent API check for each activation
             const res = await reqApi('getStatus', { id: o.id });
             if (res && res.includes('STATUS_OK')) {
                 const otp = res.split(':')[1];
@@ -336,10 +353,17 @@
                 renderOrders();
                 new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3').play().catch(()=>{});
                 reqApi('setStatus', { id: o.id, status: 6 });
+            } else if (res && res.includes('STATUS_CANCEL')) {
+                o.status = 'cancelled';
+                renderOrders();
             }
-            if (remain <= 0) { o.status = 'expired'; renderOrders(); }
-        }
-    }, 1000);
+
+            if (remain <= 0 && o.status === 'waiting') { 
+                o.status = 'expired'; 
+                renderOrders(); 
+            }
+        }));
+    }, 1500);
 
     async function cancelOrder(id) {
         const res = await reqApi('setStatus', { id, status: 8 });
