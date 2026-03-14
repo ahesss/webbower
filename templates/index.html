@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebBower — SMSBOWER BRUTAL</title>
+    <title>WebBower — MEGA BRUTAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         :root {
-            --bg: #0a0a0c;
-            --panel: #141417;
-            --accent: #bc13fe;
-            --accent-glow: rgba(188, 19, 254, 0.4);
+            --bg: #050508;
+            --panel: #0d0d12;
+            --accent: #fe2e2e; /* Red for Brutal */
+            --accent-glow: rgba(254, 46, 46, 0.4);
             --gold: #ffb700;
             --text: #e0e0e0;
             --text-dim: #909090;
@@ -24,11 +25,11 @@
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Outfit', sans-serif;
-            background-image: radial-gradient(circle at 50% -20%, #200a2e 0%, transparent 50%);
+            background-image: radial-gradient(circle at 50% -20%, #2e0a0a 0%, transparent 50%);
             min-height: 100vh;
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
 
         header {
             display: flex;
@@ -40,9 +41,10 @@
         }
 
         .logo { font-size: 28px; font-weight: 800; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo span { color: var(--accent); -webkit-text-fill-color: var(--accent); }
 
         .balance-card {
-            background: rgba(188, 19, 254, 0.05);
+            background: rgba(254, 46, 46, 0.05);
             padding: 10px 20px;
             border-radius: 12px;
             border: 1px solid var(--accent);
@@ -52,12 +54,10 @@
             cursor: pointer;
         }
         .balance-card span { color: var(--gold); font-weight: 800; font-family: 'JetBrains Mono', monospace; font-size: 18px; }
-        .refresh-btn { font-size: 20px; transition: 0.3s; color: var(--accent); }
-        .refresh-btn:hover { transform: rotate(180deg); }
 
         .api-section {
             background: var(--panel);
-            padding: 24px;
+            padding: 20px;
             border-radius: 20px;
             border: 1px solid var(--border);
             margin-bottom: 25px;
@@ -84,92 +84,88 @@
             transition: 0.3s;
             text-transform: uppercase;
         }
-        .btn-primary { background: var(--accent); color: #fff; }
-        .btn-stop { background: var(--danger); color: #fff; }
+        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent-glow); }
+        .btn-stop { background: #fff; color: #000; }
 
         .main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 25px; }
 
         .card { background: var(--panel); padding: 20px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
 
-        .stats-box { padding: 15px; background: #000; border-radius: 12px; font-size: 14px; margin-top: 15px; }
+        .stats-box { padding: 15px; background: #000; border-radius: 12px; font-size: 14px; margin-top: 15px; border: 1px solid var(--accent); }
         .stats-box p { display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .stats-box span { color: var(--accent); font-weight: 800; }
+        .stats-box span { color: var(--accent); font-weight: 800; font-family: 'JetBrains Mono', monospace; }
 
-        /* VERTICAL LIST */
         .orders-container { display: flex; flex-direction: column; gap: 12px; max-height: 80vh; overflow-y: auto; width: 100%; }
         .order-item {
-            background: var(--panel); width: 100%; padding: 20px 25px; border-radius: 16px; border: 1px solid var(--border);
+            background: var(--panel); width: 100%; padding: 15px 20px; border-radius: 16px; border: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--accent);
             animation: slideIn 0.3s ease-out;
         }
+        .order-item.done { border-left-color: var(--success); }
+
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .order-info { display: flex; flex-direction: column; gap: 4px; }
         .order-num { font-size: 22px; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: #fff; cursor: pointer; letter-spacing: 1px; }
         .order-meta { font-size: 12px; color: var(--text-dim); }
-        .timer-val { color: var(--gold); font-size: 14px; font-weight: 800; }
-
-        .order-status { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .timer-val { color: var(--gold); font-size: 13px; font-weight: 800; }
 
         .otp-badge {
-            background: var(--success); color: #000; padding: 8px 20px; border-radius: 10px; font-weight: 900;
-            font-family: 'JetBrains Mono', monospace; font-size: 24px; box-shadow: 0 0 15px var(--success); cursor: pointer;
+            background: var(--success); color: #000; padding: 10px 20px; border-radius: 10px; font-weight: 900;
+            font-family: 'JetBrains Mono', monospace; font-size: 28px; box-shadow: 0 0 20px var(--success); cursor: pointer;
         }
 
         .btn-cancel {
             background: rgba(255, 62, 62, 0.1); color: var(--danger); border: 1px solid var(--danger);
             padding: 6px 14px; font-size: 11px; border-radius: 8px; font-weight: 700; cursor: pointer;
         }
-        .btn-cancel:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        .notif {
-            position: fixed; bottom: 30px; right: 30px; padding: 15px 25px; border-radius: 12px;
-            background: var(--accent); color: #fff; font-weight: 800; transform: translateY(150px);
-            transition: 0.4s; z-index: 1000;
-        }
-        .notif.show { transform: translateY(0); }
+        .notif-box { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
+        .notif { padding: 12px 24px; border-radius: 12px; background: var(--panel); border: 1px solid var(--accent); color: #fff; font-weight: 800; margin-top: 10px; animation: slideIn 0.3s; }
 
-        .loading-ring { width: 24px; height: 24px; border: 3px solid rgba(188, 19, 254, 0.1); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s linear infinite; }
+        .loading-ring { width: 24px; height: 24px; border: 3px solid rgba(254, 46, 46, 0.1); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+        .brutal-tag { font-size: 10px; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 900; margin-bottom: 10px; display: inline-block; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="app">
     <header>
-        <div class="logo">WEBBOWER <span>ULTRA</span></div>
-        <div class="balance-card" onclick="updateBalance()">
+        <div class="logo">BOWER <span>MEGA BRUTAL</span></div>
+        <div class="balance-card" onclick="getBal()">
             💰 <span id="balance-val">0.00</span> <small style="color:var(--text-dim)">USD</small>
-            <div class="refresh-btn">🔄</div>
         </div>
     </header>
 
     <div class="api-section">
-        <input type="password" id="api-key" placeholder="Enter SMSBower API Key..." onchange="saveKey()">
-        <button class="btn btn-primary" onclick="updateBalance()" style="width: auto;">SYNC</button>
+        <input type="password" id="api-key" placeholder="Enter SMSBower API Key..." onchange="initApp()">
+        <button class="btn btn-primary" onclick="initApp()">SYNC</button>
     </div>
 
     <div class="main-grid">
         <div class="sidebar">
             <div class="card">
+                <div class="brutal-tag">⚡ HAYUK MODE ACTIVE</div>
                 <h3 style="margin-bottom: 12px; font-size: 14px; color: var(--accent);">TARGET CONFIG</h3>
                 <select id="country-select">
-                    <option value="vietnam" data-id="10" data-code="84">Vietnam 🇻🇳</option>
-                    <option value="colombia" data-id="33" data-code="57">Colombia 🇨🇴</option>
-                    <option value="philipina" data-id="4" data-code="63">Philipina 🇵🇭</option>
-                    <option value="mexico" data-id="54" data-code="52" selected>Mexico 🇲🇽 (HOT)</option>
-                    <option value="brazil" data-id="73" data-code="55">Brazil 🇧🇷</option>
+                    <option value="vietnam" data-id="10">Vietnam 🇻🇳</option>
+                    <option value="colombia" data-id="33">Colombia 🇨🇴</option>
+                    <option value="philipina" data-id="4">Philipina 🇵🇭</option>
+                    <option value="mexico" data-id="54" selected>Mexico 🇲🇽 (BRUTAL)</option>
+                    <option value="brazil" data-id="73">Brazil 🇧🇷</option>
                 </select>
-                <label style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; display: block;">MAX PRICE ($):</label>
+                <label style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; display: block; margin-top: 15px;">MAX PRICE ($):</label>
                 <input type="number" id="max-price" value="1.0" step="0.01" style="width: 100%; margin-bottom: 15px;">
-                <button id="start-btn" class="btn btn-primary" style="width: 100%; height: 55px;" onclick="toggleAutoBuy()">🚀 START BRUTAL BUY</button>
+                
+                <button id="start-btn" class="btn btn-primary" style="width: 100%; height: 60px; font-size: 18px;" onclick="toggleAuto()">🚀 START MEGA BRUTAL</button>
+                
                 <div class="stats-box" id="stats-ui" style="display: none;">
                     <p>ATTEMPTS: <span id="stat-att">0</span></p>
                     <p>FOUND: <span id="stat-found">0</span></p>
                     <p>SPEED: <span id="stat-speed">0.0</span>/s</p>
-                    <p>STATUS: <span id="api-status" style="font-size: 10px; color: var(--text-dim);">IDLE</span></p>
+                    <p>TIME: <span id="stat-time">0</span>s</p>
                 </div>
             </div>
             <button class="btn" style="background: rgba(255,255,255,0.05); color: #fff; width: 100%;" onclick="copyAll()">📋 COPY ALL NUMBERS</button>
@@ -177,208 +173,176 @@
 
         <div class="content">
             <div class="orders-container" id="orders-list">
-                <div style="text-align: center; color: var(--text-dim); margin-top: 100px;">READY FOR SNIPING 🇲🇽</div>
+                <div style="text-align: center; color: var(--text-dim); margin-top: 100px; font-weight: 800;">READY FOR MEGA BRUTAL SNIPING 🇲🇽</div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="notif" id="notif">Copied!</div>
+<div class="notif-box" id="notif-box"></div>
 
 <script>
+    const socket = io({transports:['websocket','polling'], reconnection: true});
     let isRunning = false;
     let apiKey = localStorage.getItem('webbower_key') || '';
-    let orders = [];
-    let stats = { att: 0, found: 0, startTime: 0 };
+    let acts = {}; 
 
     if (apiKey) document.getElementById('api-key').value = apiKey;
 
-    function saveKey() {
+    function initApp() {
         apiKey = document.getElementById('api-key').value.trim();
-        localStorage.setItem('webbower_key', apiKey);
-    }
-
-    async function reqApi(action, extra = {}) {
-        if (!apiKey) return;
-        const params = new URLSearchParams({ action, api_key: apiKey, ...extra });
-        try {
-            const r = await fetch(`/api/proxy?${params.toString()}`);
-            return await r.text();
-        } catch (e) { return 'ERR_HTTP'; }
-    }
-
-    async function updateBalance() {
-        saveKey();
-        const res = await reqApi('getBalance');
-        if (res && res.includes('ACCESS_BALANCE')) {
-            const b = res.split(':')[1];
-            document.getElementById('balance-val').innerText = parseFloat(b).toFixed(2);
-            showNotif('BALANCE SYNCED');
+        if (apiKey) {
+            localStorage.setItem('webbower_key', apiKey);
+            socket.emit('init_session', {api_key: apiKey});
+            getBal();
+            toast('✅ Session Synced');
         }
     }
 
-    function showNotif(txt) {
-        const n = document.getElementById('notif');
-        n.innerText = txt; n.classList.add('show');
-        setTimeout(() => n.classList.remove('show'), 2000);
-    }
+    function getBal() { socket.emit('get_balance', {api_key: apiKey}); }
 
-    function toggleAutoBuy() {
+    socket.on('balance_update', d => {
+        document.getElementById('balance-val').innerText = parseFloat(d.balance).toFixed(2);
+    });
+
+    socket.on('autobuy_started', () => {
+        isRunning = true;
+        updateButtons();
+        document.getElementById('stats-ui').style.display = 'block';
+        toast('🚀 MEGA BRUTAL MODE ACTIVE!');
+    });
+
+    socket.on('autobuy_stopped', () => {
+        isRunning = false;
+        updateButtons();
+        toast('🛑 MODE STOPPED');
+    });
+
+    socket.on('autobuy_stats', d => {
+        document.getElementById('stat-att').innerText = d.attempts;
+        document.getElementById('stat-found').innerText = d.found;
+        document.getElementById('stat-speed').innerText = d.speed;
+        document.getElementById('stat-time').innerText = d.elapsed;
+    });
+
+    socket.on('new_number', d => {
+        if (acts[d.id]) return;
+        acts[d.id] = d;
+        renderOrder(d);
+        new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play().catch(()=>{});
+        getBal(); // Refresh balance
+    });
+
+    socket.on('order_update', d => {
+        if (acts[d.id]) {
+            acts[d.id].status = d.status;
+            if (d.code) acts[d.id].code = d.code;
+            updateOrderUI(acts[d.id]);
+        }
+    });
+
+    function toggleAuto() {
         if (!apiKey) { alert('Enter API Key!'); return; }
-        isRunning = !isRunning;
-        const btn = document.getElementById('start-btn');
-        const statsUi = document.getElementById('stats-ui');
-
-        if (isRunning) {
-            btn.innerText = '🛑 STOP BRUTAL BUY';
-            btn.className = 'btn btn-stop';
-            statsUi.style.display = 'block';
-            resetStats();
-            // Start 5 concurrent workers for "War Mode"
-            for(let i=0; i<5; i++) startBrutalLoop();
+        if (!isRunning) {
+            const countrySelect = document.getElementById('country-select');
+            const countryId = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-id');
+            const maxPrice = document.getElementById('max-price').value;
+            socket.emit('start_autobuy', {api_key: apiKey, country_id: countryId, max_price: maxPrice});
         } else {
-            btn.innerText = '🚀 START BRUTAL BUY';
+            socket.emit('stop_autobuy', {api_key: apiKey});
+        }
+    }
+
+    function updateButtons() {
+        const btn = document.getElementById('start-btn');
+        if (isRunning) {
+            btn.innerText = '🛑 STOP MEGA BRUTAL';
+            btn.className = 'btn btn-stop';
+        } else {
+            btn.innerText = '🚀 START MEGA BRUTAL';
             btn.className = 'btn btn-primary';
-            document.getElementById('api-status').innerText = 'STOPPED';
         }
     }
 
-    function resetStats() {
-        stats = { att: 0, found: 0, startTime: Date.now() };
-        updateStatsUi();
-    }
-
-    function updateStatsUi() {
-        const el = (Date.now() - stats.startTime) / 1000;
-        document.getElementById('stat-att').innerText = stats.att;
-        document.getElementById('stat-found').innerText = stats.found;
-        document.getElementById('stat-speed').innerText = (stats.att / Math.max(el, 1)).toFixed(1);
-    }
-
-    async function startBrutalLoop() {
-        const countrySelect = document.getElementById('country-select');
-        const countryId = countrySelect.options[countrySelect.selectedIndex].getAttribute('data-id');
-        const mP = document.getElementById('max-price').value;
-        const statusEl = document.getElementById('api-status');
-
-        while (isRunning) {
-            stats.att++;
-            if (stats.att % 10 === 0) updateStatsUi();
-
-            const res = await reqApi('getNumber', { service: 'wa', country: countryId, maxPrice: mP });
-            
-            if (res && res.includes('ACCESS_NUMBER')) {
-                const parts = res.split(':');
-                if (parts.length >= 3) {
-                    const id = parts[1];
-                    const num = parts[2];
-                    stats.found++;
-                    addOrder(id, num, mP);
-                    updateStatsUi();
-                    updateBalance();
-                    statusEl.innerText = "NUM FOUND!";
-                    new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play().catch(()=>{});
-                }
-            } else if (res && res.includes('NO_BALANCE')) {
-                isRunning = false; toggleAutoBuy(); alert('SALDO HABIS!'); break;
-            } else {
-                // Update status display (NO_NUMBERS, BANNED, etc)
-                if (res && res.length < 30) statusEl.innerText = res;
-            }
-
-            // High-speed loop (0ms delay for "War Mode")
-            await new Promise(r => setTimeout(r, 1));
-        }
-    }
-
-    function addOrder(id, num, price) {
-        const order = { id, number: num, price, status: 'waiting', otp: '', time: Date.now() };
-        orders.unshift(order);
-        renderOrders();
-    }
-
-    function renderOrders() {
+    function renderOrder(o) {
         const list = document.getElementById('orders-list');
-        if (orders.length === 0) return;
-        list.innerHTML = orders.map(o => `
-            <div class="order-item">
-                <div class="order-info">
-                    <div class="order-num" onclick="copyText('${o.number}')">+${o.number}</div>
-                    <div class="order-meta">ID: ${o.id} | $${o.price} | <span class="timer-val" id="timer-${o.id}">20:00</span></div>
-                </div>
-                <div class="order-status">
-                    ${o.otp ? `<div class="otp-badge" onclick="copyText('${o.otp}')">${o.otp}</div>` : 
-                      o.status === 'waiting' ? `<div class="loading-ring"></div>` : 
-                      `<span style="color:var(--text-dim);font-weight:900">${o.status.toUpperCase()}</span>`}
-                    ${o.status === 'waiting' ? `<button class="btn-cancel" id="btn-can-${o.id}" onclick="cancelOrder('${o.id}')" disabled>WAITING (120s)</button>` : ''}
-                </div>
+        const empty = list.querySelector('div[style*="text-align: center"]');
+        if (empty) empty.remove();
+
+        const card = document.createElement('div');
+        card.className = 'order-item';
+        card.id = `order_${o.id}`;
+        card.innerHTML = `
+            <div class="order-info">
+                <div class="order-num" onclick="copy('${o.number}')">+${o.number}</div>
+                <div class="order-meta">ID: ${o.id} | $${o.price} | <span class="timer-val" id="time_${o.id}">20:00</span></div>
             </div>
-        `).join('');
+            <div id="status_${o.id}">
+                <div class="loading-ring"></div>
+            </div>
+            <div style="margin-left: 10px;">
+                <button class="btn-cancel" id="can_${o.id}" onclick="cancel('${o.id}')" disabled>Wait...</button>
+            </div>
+        `;
+        list.prepend(card);
+        startTimer(o.id, o.order_time);
     }
 
-    // PARALLEL TICK FOR UI & OTP
-    setInterval(async () => {
-        const now = Date.now();
-        const waiting = orders.filter(o => o.status === 'waiting');
-        if (waiting.length === 0) return;
+    function updateOrderUI(o) {
+        const statusBox = document.getElementById(`status_${o.id}`);
+        const card = document.getElementById(`order_${o.id}`);
+        if (!statusBox || !card) return;
 
-        // Check OTP for all waiting orders in parallel (BULLSEYE!)
-        await Promise.all(waiting.map(async (o) => {
-            const elapsed = Math.floor((now - o.time) / 1000);
-            const remain = 1200 - elapsed;
-            
-            const timerEl = document.getElementById(`timer-${o.id}`);
-            if (timerEl) {
-                if (remain <= 0) timerEl.innerText = "EXPIRED";
-                else timerEl.innerText = `${Math.floor(remain/60)}:${(remain%60).toString().padStart(2,'0')}`;
-            }
-
-            const cancelBtn = document.getElementById(`btn-can-${o.id}`);
-            if (cancelBtn) {
-                if (elapsed >= 120) {
-                    cancelBtn.disabled = false;
-                    cancelBtn.innerText = "✕ CANCEL";
-                    cancelBtn.style.background = "rgba(255, 62, 62, 0.2)";
-                } else {
-                    cancelBtn.innerText = `WAIT (${120 - elapsed}s)`;
-                }
-            }
-
-            // Independent API check for each activation
-            const res = await reqApi('getStatus', { id: o.id });
-            if (res && res.includes('STATUS_OK')) {
-                const otp = res.split(':')[1];
-                o.status = 'done';
-                o.otp = otp;
-                renderOrders();
-                new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3').play().catch(()=>{});
-                reqApi('setStatus', { id: o.id, status: 6 });
-            } else if (res && res.includes('STATUS_CANCEL')) {
-                o.status = 'cancelled';
-                renderOrders();
-            }
-
-            if (remain <= 0 && o.status === 'waiting') { 
-                o.status = 'expired'; 
-                renderOrders(); 
-            }
-        }));
-    }, 1500);
-
-    async function cancelOrder(id) {
-        const res = await reqApi('setStatus', { id, status: 8 });
-        if (res && res.includes('ACCESS_CANCEL')) {
-            const o = orders.find(x => x.id === id);
-            if (o) o.status = 'cancelled';
-            renderOrders();
+        if (o.status === 'got_otp') {
+            card.classList.add('done');
+            statusBox.innerHTML = `<div class="otp-badge" onclick="copy('${o.code}')">${o.code}</div>`;
+            const canBtn = document.getElementById(`can_${o.id}`);
+            if (canBtn) canBtn.remove();
+            new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3').play().catch(()=>{});
+        } else if (['cancelled', 'timeout'].includes(o.status)) {
+            statusBox.innerHTML = `<span style="color:var(--danger); font-weight:900;">${o.status.toUpperCase()}</span>`;
+            card.style.opacity = '0.4';
+            const canBtn = document.getElementById(`can_${o.id}`);
+            if (canBtn) canBtn.remove();
         }
     }
 
-    function copyText(txt) { navigator.clipboard.writeText(txt); showNotif('COPIED!'); }
-    function copyAll() {
-        const t = orders.filter(o => o.status === 'waiting').map(o => o.number).join('\n');
-        if (t) { navigator.clipboard.writeText(t); showNotif('ALL COPIED!'); }
+    function startTimer(id, st) {
+        const t = setInterval(() => {
+            const el = Date.now()/1000 - st, rem = 1200 - el;
+            if (rem <= 0) { clearInterval(t); return; }
+            const tEl = document.getElementById(`time_${id}`);
+            if (tEl) tEl.innerText = `${Math.floor(rem/60)}:${Math.floor(rem%60).toString().padStart(2,'0')}`;
+            
+            const cBtn = document.getElementById(`can_${id}`);
+            if (cBtn && el >= 120) { 
+                cBtn.disabled = false; 
+                cBtn.innerText = '✕ CANCEL'; 
+                cBtn.style.background = 'rgba(255, 62, 62, 0.2)';
+            } else if (cBtn) {
+                cBtn.innerText = `WAIT ${Math.ceil(120-el)}s`;
+            }
+        }, 1000);
     }
+
+    function cancel(id) { socket.emit('cancel_order', {api_key: apiKey, id: id}); }
+    function copy(t) { navigator.clipboard.writeText(t); toast('📋 COPIED: ' + t); }
+    function toast(m) {
+        const b = document.getElementById('notif-box');
+        const n = document.createElement('div');
+        n.className = 'notif';
+        n.innerText = m;
+        b.appendChild(n);
+        setTimeout(() => n.remove(), 3000);
+    }
+    
+    function copyAll() {
+        const nums = Object.values(acts).filter(o => o.status === 'waiting').map(o => o.number).join('\n');
+        if (nums) { navigator.clipboard.writeText(nums); toast('📋 ALL COPIED!'); }
+    }
+
+    // Handle initial state if key exists
+    if (apiKey) initApp();
 </script>
 </body>
 </html>
